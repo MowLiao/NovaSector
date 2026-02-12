@@ -45,7 +45,7 @@ const CLOTHING_SELECTION_WIDTH = 5.4;
 const CLOTHING_SELECTION_MULTIPLIER = 5.2;
 
 type CharacterControlsProps = {
-  handleRotate: () => void;
+  handleRotate: (backwards: boolean) => void; // NOVA EDIT CHANGE - Original: handleRotate: () => void;
   handleOpenSpecies: () => void;
   handleFood: () => void; // NOVA EDIT ADDITION
   gender: Gender;
@@ -60,13 +60,25 @@ function CharacterControls(props: CharacterControlsProps) {
     <Stack>
       <Stack.Item>
         <Button
-          onClick={props.handleRotate}
+          onClick={() => props.handleRotate(true)} // NOVA EDIT CHANGE - Original: onClick={props.handleRotate}
           fontSize="22px"
           icon="undo"
           tooltip="Rotate"
           tooltipPosition="top"
         />
       </Stack.Item>
+
+      {/* NOVA EDIT ADDITION START */}
+      <Stack.Item>
+        <Button
+          onClick={() => props.handleRotate(false)}
+          fontSize="22px"
+          icon="redo"
+          tooltip="Rotate"
+          tooltipPosition="top"
+        />
+      </Stack.Item>
+      {/* NOVA EDIT ADDITION END */}
 
       <Stack.Item>
         <Button
@@ -591,8 +603,8 @@ export function MainPage(props: MainPageProps) {
               <CharacterControls
                 gender={data.character_preferences.misc.gender}
                 handleOpenSpecies={props.openSpecies}
-                handleRotate={() => {
-                  act('rotate');
+                handleRotate={(value) => {
+                  act('rotate', { backwards: value }); // NOVA EDIT CHANGE - Original: handleRotate={() => { act('rotate'); }}
                 }}
                 setGender={createSetPreference(act, 'gender')}
                 showGender={
