@@ -19,6 +19,7 @@ import { createSearch } from 'tgui-core/string';
 import { CharacterPreview } from '../../common/CharacterPreview';
 import { PageButton } from '../components/PageButton'; // NOVA EDIT ADDITION
 import { RandomizationButton } from '../components/RandomizationButton';
+import { SideDropdown } from '../components/SideDropdown'; // NOVA EDIT ADDITION
 import { features } from '../preferences/features';
 import {
   type FeatureChoicedServerData,
@@ -626,14 +627,14 @@ export function MainPage(props: MainPageProps) {
 
             <Stack.Item grow>
               <CharacterPreview
-                height="80%" // NOVA EDIT - ORIGINAL: height="100%"
+                height="100%"
                 id={data.character_preview_view}
               />
             </Stack.Item>
 
             {/* NOVA EDIT ADDITION START */}
             <Stack.Item position="relative">
-              <Dropdown
+              <SideDropdown
                 width="100%"
                 selected={data.preview_selection}
                 options={data.preview_options}
@@ -644,6 +645,20 @@ export function MainPage(props: MainPageProps) {
                 }
               />
             </Stack.Item>
+            {/* NOVA EDIT ADDITION START: Background Selection */}
+            <Stack.Item position="relative">
+              <SideDropdown
+                width="100%"
+                selected={data.character_preferences.misc.background_state}
+                options={serverData?.background_state.choices || []}
+                onSelected={(value) =>
+                  act('update_background', {
+                    new_background: value,
+                  })
+                }
+              />
+            </Stack.Item>
+            {/* NOVA EDIT ADDITION END: Background Selection */}
             {/* NOVA EDIT ADDITION END */}
             <Stack.Item position="relative">
               <NameInput
